@@ -1,5 +1,6 @@
 import { initializeDataSource } from "@/dataSource";
 import { fetchParameters } from "@/fetchParameters";
+import { errorHandlerMiddleware } from "@/middleware/ErrorHandlerMiddleware";
 import routes from "@/routes";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -38,6 +39,7 @@ async function startServer() {
     );
 
     app.use(routes);
+    app.use(errorHandlerMiddleware);
 
     const PORT = process.env.PORT || 8080;
     app.listen(PORT, () => {
