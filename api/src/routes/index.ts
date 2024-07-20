@@ -1,11 +1,9 @@
-import { Router } from "express";
-import apiRoutes from "./api";
-const commonRouter = Router();
+import { Request, Response, Router } from "express";
 
-commonRouter.use("/api", apiRoutes);
+const router = Router();
 
-commonRouter.get("/api/health-check", (req, res) => {
+router.get("/api/health-check", (req: Request, res: Response) => {
   res.status(200).send("Alive!");
 });
 
-export default commonRouter;
+export default router;

@@ -1,3 +1,4 @@
+import { initializeDataSource } from "@/dataSource";
 import { fetchParameters } from "@/fetchParameters";
 import routes from "@/routes";
 import cors from "cors";
@@ -11,6 +12,8 @@ dotenv.config();
 async function startServer() {
   try {
     await fetchParameters();
+
+    await initializeDataSource();
 
     const app: Express = express();
     const CORS_WHITELIST = process.env.CORS_WHITELIST || "";
@@ -36,7 +39,7 @@ async function startServer() {
 
     app.use(routes);
 
-    const PORT = process.env.PORT || 3156;
+    const PORT = process.env.PORT || 8080;
     app.listen(PORT, () => {
       console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
     });

@@ -17,9 +17,14 @@ export const fetchParameters = async () => {
   const appName = process.env.APP_NAME || "app";
 
   const paramNames = [
+    `/${appName}/${environment}/APP_NAME`,
     `/${appName}/${environment}/PORT`,
     `/${appName}/${environment}/CORS_WHITELIST`,
-    // other parameters ...
+    `/${appName}/${environment}/DB_HOST`,
+    `/${appName}/${environment}/DB_PORT`,
+    `/${appName}/${environment}/DB_USER`,
+    `/${appName}/${environment}/DB_PASSWORD`,
+    `/${appName}/${environment}/DB_NAME`,
   ];
 
   const params = {
