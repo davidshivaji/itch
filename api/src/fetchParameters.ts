@@ -14,10 +14,11 @@ const extractEnvVariable = (param: IEnvParameter) => {
 
 export const fetchParameters = async () => {
   const environment = process.env.ENVIRONMENT || "dev";
+  const appName = process.env.APP_NAME || "app";
 
   const paramNames = [
-    `/your-app/${environment}/PORT`,
-    `/your-app/${environment}/CORS_WHITELIST`,
+    `/${appName}/${environment}/PORT`,
+    `/${appName}/${environment}/CORS_WHITELIST`,
     // other parameters ...
   ];
 
