@@ -5,6 +5,8 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
     "rootDir": "./src",
@@ -12,8 +14,7 @@
     "baseUrl": "./src",
     "paths": {
       "@/*": ["*"]
-    },
-    "experimentalDecorators": true
+    }
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"]
