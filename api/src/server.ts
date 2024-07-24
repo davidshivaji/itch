@@ -1,4 +1,5 @@
 import "reflect-metadata"; // leave at top of file
+import "@/envConfig"; // load before initializeDataSource
 import { initializeDataSource } from "@/dataSource";
 import { fetchParameters } from "@/fetchParameters";
 import { errorHandlerMiddleware } from "@/middleware/ErrorHandlerMiddleware";
@@ -6,12 +7,8 @@ import routes from "@/routes";
 import { S3Client, S3ClientConfig } from "@aws-sdk/client-s3";
 import { fromIni } from "@aws-sdk/credential-provider-ini";
 import cors from "cors";
-import dotenv from "dotenv";
 import express, { Express } from "express";
 import "module-alias/register";
-
-// load environment variables from .env file for local development
-dotenv.config();
 
 console.log("DB_HOST:", process.env.DB_HOST);
 console.log("DB_PORT:", process.env.DB_PORT);
@@ -37,15 +34,11 @@ async function getConfig(): Promise<S3ClientConfig> {
 
 async function startServer() {
   try {
-    console.log("calling getConfig");
     const s3ClientConfig = await getConfig();
-    console.log("called getConfig", s3ClientConfig);
-    const s3Client = new S3Client({
+    const s3Client = await new S3Client({
       region: s3ClientConfig.region,
       credentials: s3ClientConfig.credentials,
     });
-
-    console.log("S3 Client Config:", s3Client.config);
 
     await fetchParameters();
     await initializeDataSource();

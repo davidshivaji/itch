@@ -1,6 +1,9 @@
 import { SSM } from "aws-sdk";
 
-const ssm = new SSM();
+// "ap-southeast-2"
+const ssm = new SSM({
+  region: process.env.AWS_REGION,
+});
 
 export interface IEnvParameter {
   Name: string;
@@ -25,6 +28,8 @@ export const fetchParameters = async () => {
     `/${appName}/${environment}/DB_USER`,
     `/${appName}/${environment}/DB_PASSWORD`,
     `/${appName}/${environment}/DB_NAME`,
+    `/${appName}/${environment}/AWS_PROFILE`,
+    `/${appName}/${environment}/AWS_REGION`,
   ];
 
   const params = {
@@ -32,14 +37,18 @@ export const fetchParameters = async () => {
     WithDecryption: true,
   };
 
-  const result = await ssm.getParameters(params).promise();
+  try {
+    const result = await ssm.getParameters(params).promise();
 
-  const envVariables = result.Parameters?.reduce((acc, param) => {
-    if (param.Name && param.Value !== undefined) {
-      return { ...acc, ...extractEnvVariable(param as IEnvParameter) };
-    }
-    return acc;
-  }, {});
+    const envVariables = result.Parameters?.reduce((acc, param) => {
+      if (param.Name && param.Value !== undefined) {
+        return { ...acc, ...extractEnvVariable(param as IEnvParameter) };
+      }
+      return acc;
+    }, {});
 
-  Object.assign(process.env, envVariables);
+    Object.assign(process.env, envVariables);
+  } catch (error) {
+    console.error("Error fetching parameters", error);
+  }
 };
